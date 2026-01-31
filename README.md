@@ -189,7 +189,8 @@ All configuration options are in `~/.config/caelestia/cli.json`.
 ```json
 {
     "record": {
-        "extraArgs": []
+        "extraArgs": [],
+        "directory": "/home/<USER>/Videos/Recordings"
     },
     "wallpaper": {
         "postHook": "echo $WALLPAPER_PATH $SCHEME_NAME $SCHEME_FLAVOUR $SCHEME_MODE $SCHEME_VARIANT $SCHEME_COLOURS"
