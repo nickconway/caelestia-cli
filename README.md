@@ -131,10 +131,11 @@ All configuration options are in `~/.config/caelestia/cli.json`.
 ```json
 {
     "record": {
-        "extraArgs": []
+        "extraArgs": [],
+        "directory": "/home/<USER>/Videos/Recordings"
     },
     "wallpaper": {
-        "postHook": "echo $WALLPAPER_PATH"  
+        "postHook": "echo $WALLPAPER_PATH"
     },
     "theme": {
         "enableTerm": true,

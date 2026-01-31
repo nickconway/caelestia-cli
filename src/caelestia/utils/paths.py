@@ -36,7 +36,6 @@ wallpapers_cache_dir = c_cache_dir / "wallpapers"
 screenshots_dir = os.getenv("CAELESTIA_SCREENSHOTS_DIR", pictures_dir / "Screenshots")
 screenshots_cache_dir = c_cache_dir / "screenshots"
 
-recordings_dir = os.getenv("CAELESTIA_RECORDINGS_DIR", videos_dir / "Recordings")
 recording_path = c_state_dir / "record/recording.mp4"
 recording_notif_path = c_state_dir / "record/notifid.txt"
 

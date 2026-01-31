@@ -1,3 +1,6 @@
+import os
+from caelestia.utils.paths import videos_dir
+from pathlib import Path
 import json
 import re
 import shutil
@@ -7,7 +10,7 @@ from argparse import Namespace
 from datetime import datetime
 
 from caelestia.utils.notify import close_notification, notify
-from caelestia.utils.paths import recording_notif_path, recording_path, recordings_dir, user_config_path
+from caelestia.utils.paths import recording_notif_path, recording_path, user_config_path
 
 RECORDER = "gpu-screen-recorder"
 
@@ -33,7 +36,7 @@ class Command:
         return a[0] < b[0] + b[2] and a[0] + a[2] > b[0] and a[1] < b[1] + b[3] and a[1] + a[3] > b[1]
 
     def start(self) -> None:
-        args = ["-w"]
+        args = ["-fallback-cpu-encoding", "yes", "-w"]
 
         monitors = json.loads(subprocess.check_output(["hyprctl", "monitors", "-j"]))
         if self.args.region:
@@ -98,6 +101,11 @@ class Command:
             time.sleep(0.1)
 
         # Move to recordings folder
+        config = json.loads(user_config_path.read_text())
+
+        recordings_dir = os.getenv("CAELESTIA_RECORDINGS_DIR", Path(config.get("record", {}).get("directory", "") or (videos_dir / "Recordings")))
+        recordings_dir = Path(str(recordings_dir).replace("$HOME", os.getenv("HOME")).replace("~", os.getenv("HOME")))
+
         new_path = recordings_dir / f"recording_{datetime.now().strftime('%Y%m%d_%H-%M-%S')}.mp4"
         recordings_dir.mkdir(exist_ok=True, parents=True)
         shutil.move(recording_path, new_path)
