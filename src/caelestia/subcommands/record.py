@@ -34,7 +34,7 @@ class Command:
         return a[0] < b[0] + b[2] and a[0] + a[2] > b[0] and a[1] < b[1] + b[3] and a[1] + a[3] > b[1]
 
     def start(self) -> None:
-        args = ["-w"]
+        args = ["-fallback-cpu-encoding", "yes", "-w"]
 
         monitors = json.loads(subprocess.check_output(["hyprctl", "monitors", "-j"]))
         if self.args.region:
@@ -99,7 +99,10 @@ class Command:
             time.sleep(0.1)
 
         # Move to recordings folder
-        new_path = recordings_dir / f"recording_{datetime.now().strftime('%Y%m%d_%H-%M-%S')}.mp4"
+        config = json.loads(user_config_path.read_text())
+
+        new_dir = Path(dir) if (dir := config.get("record", {}).get("directory", "")) else recordings_dir
+        new_path = new_dir / f"recording_{datetime.now().strftime('%Y%m%d_%H-%M-%S')}.mp4"
         recordings_dir.mkdir(exist_ok=True, parents=True)
         shutil.move(recording_path, new_path)
 
